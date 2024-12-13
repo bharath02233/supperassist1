@@ -14,25 +14,24 @@ app.use(bodyparser.urlencoded({extended:'false'}));
 app.get("/",(req,res)=>{
     res.send("hi");
 })
-app.post("/submit",(req,res)=>{
-    console.log(req.body)
-    quizMod.insertMany(req.body)
-  .then(() => {
-    console.log('Data inserted successfully');
-    mongoose.connection.close(); // Close the connection after operation
+app.post("/submit",async(req,res)=>{
+
+    await quizMod.deleteMany({});
+   await quizMod.insertMany(req.body)
+  .then((data) => {
+    res.json(data);
   })
-  .catch(err => console.error('Error inserting data', err));
-    const response = { message: 'hi' };  // Create a response object
-    res.json(response);
+  .catch(err => res.json(err));
+  
     
 })
 
-app.post("/submit1",(req,res)=>{
+app.post("/submit1",async(req,res)=>{
+    await quiz1Mod.deleteMany({});
     const temp=new quiz1Mod(req.body);
-    temp.save().then((res)=>{console.log(res)}).catch((error)=>{console.log(error)})
+    await temp.save().then((data)=>res.json(data)).catch((error)=>res.json(error))
 
-      const response = { message: 'hi' };  // Create a response object
-      res.json(response);
+     
    
     
 })
