@@ -11,7 +11,9 @@ app.use(cors())
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:'false'}));
 
-
+app.get("/",(req,res)=>{
+    res.send("hi");
+})
 app.post("/submit",(req,res)=>{
     console.log(req.body)
     quizMod.insertMany(req.body)
